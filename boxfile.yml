@@ -14,6 +14,8 @@ run.config:
       - session
       - tokenizer
       - zip
+      - pdo
+      - pdo_mysql
 
   #
   # network_dirs:
@@ -21,8 +23,8 @@ run.config:
   #     - path/to/shared/directory
 
 # add a MySQL database
-# data.db:
-#   image: nanobox/mysql
+data.db:
+  image: nanobox/mysql
 
 web.main:
   start: php-server

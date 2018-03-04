@@ -17,3 +17,7 @@ $container['logger'] = function ($c) {
     $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], $settings['level']));
     return $logger;
 };
+
+$container['database'] = function ($c) {
+    return new PDO('mysql:host=' . getenv('DATA_DB_HOST') . ';dbname=gonano', getenv('DATA_DB_USER'), getenv('DATA_DB_PASS'));
+};
