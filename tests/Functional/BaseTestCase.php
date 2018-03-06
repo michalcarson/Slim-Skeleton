@@ -2,10 +2,12 @@
 
 namespace Tests\Functional;
 
+use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 use Slim\App;
+use Slim\Http\Environment;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Slim\Http\Environment;
 
 /**
  * This is an example class that shows how you could set up a method that
@@ -13,7 +15,7 @@ use Slim\Http\Environment;
  * tuned to the specifics of this skeleton app, so if your needs are
  * different, you'll need to change it.
  */
-class BaseTestCase extends \PHPUnit_Framework_TestCase
+class BaseTestCase extends TestCase
 {
     /**
      * Use middleware when running application?
@@ -21,6 +23,33 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
      * @var bool
      */
     protected $withMiddleware = true;
+
+    /**
+     * @var App
+     */
+    protected $app;
+
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        // Use the application settings
+        $settings = require __DIR__ . '/../../src/settings.php';
+
+        // Instantiate the application
+        $this->app = $app = new App($settings);
+
+        // Set up dependencies
+        require __DIR__ . '/../../src/dependencies.php';
+
+        // Always seem to need the container
+        $this->container = $this->app->getContainer();
+    }
 
     /**
      * Process the application given a request method and URI
