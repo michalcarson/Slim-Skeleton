@@ -1,6 +1,9 @@
 <?php
 // DIC configuration
 
+use App\Repositories\IndispensableRepository;
+use App\Services\UsefulService;
+
 $container = $app->getContainer();
 
 // view renderer
@@ -21,3 +24,17 @@ $container['logger'] = function ($c) {
 $container['database'] = function ($c) {
     return new PDO('mysql:host=' . getenv('DATA_DB_HOST') . ';dbname=gonano', getenv('DATA_DB_USER'), getenv('DATA_DB_PASS'));
 };
+
+$container[UsefulService::class] = function ($c) {
+    return new UsefulService(
+        $c[IndispensableRepository::class],
+        $c['logger']
+    );
+};
+
+$container[IndispensableRepository::class] = function ($c) {
+    return new IndispensableRepository(
+        $c['database']
+    );
+};
+
